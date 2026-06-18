@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Real Cost — See What Your Expenses Really Add Up To</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root {
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+    --accent: #4a6fa5;
+    --accent-dark: #3a5a82;
+    --accent-light: #eaf0f6;
+    --accent-softer: #f4f7fb;
+    --success: #10b981;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+    --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+    --shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+    color: var(--slate-800);
+    min-height: 100vh;
+    line-height: 1.6;
+    padding: 2rem 1rem 3rem;
+    overflow-x: hidden;
+  }
+
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before {
+    top: -10%; right: -5%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(74, 111, 165, 0.08) 0%, transparent 70%);
+  }
+  body::after {
+    bottom: -10%; left: -5%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(74, 111, 165, 0.06) 0%, transparent 70%);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInDown 0.8s ease-out;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent-light);
+    color: var(--accent-dark);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.02em;
+  }
+  .header-badge i { font-size: 0.7rem; }
+
+  .header h1 {
+    font-size: clamp(2.2rem, 6vw, 3.75rem);
+    font-weight: 800;
+    color: var(--slate-900);
+    letter-spacing: -0.035em;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .header h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header p {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    color: var(--slate-500);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .input-card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 2.25rem;
+    box-shadow: var(--shadow-xl);
+    margin-bottom: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    animation: fadeInUp 0.8s ease-out 0.15s both;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1.25rem;
+    align-items: end;
+  }
+
+  @media (max-width: 720px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .input-card { padding: 1.5rem; }
+    body { padding: 1rem; }
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--slate-600);
+    margin-bottom: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .input-wrap { position: relative; }
+  .input-wrap .input-prefix {
+    position: absolute;
+    left: 1.1rem; top: 50%;
+    transform: translateY(-50%);
+    color: var(--slate-400);
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--slate-200);
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 1.05rem;
+    color: var(--slate-900);
+    background: var(--slate-50);
+    transition: all 0.2s ease;
+    appearance: none;
+    font-weight: 600;
+  }
+  .form-group input.has-prefix { padding-left: 2.25rem; }
+
+  .form-group select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 2.75rem;
+    cursor: pointer;
+  }
+
+  .form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(74, 111, 165, 0.12);
+  }
+
+  .calculate-btn {
+    padding: 1rem 1.75rem;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 1.02rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(74, 111, 165, 0.3);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    justify-content: center;
+    height: 56px;
+    letter-spacing: -0.01em;
+  }
+  .calculate-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74, 111, 165, 0.4); }
+  .calculate-btn:active { transform: translateY(0); }
+  .calculate-btn i { transition: transform 0.3s ease; }
+  .calculate-btn:hover i { transform: translateX(3px); }
+
+  .presets {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 1.25rem; padding-top: 1.25rem;
+    border-top: 1px solid var(--slate-100);
+  }
+  .presets-label {
+    font-size: 0.78rem; color: var(--slate-500);
+    font-weight: 600; align-self: center; margin-right: 0.25rem;
+  }
+  .preset-chip {
+    padding: 0.45rem 0.9rem;
+    background: var(--accent-softer);
+    border: 1px solid var(--slate-200);
+    color: var(--slate-700);
+    border-radius: 100px;
+    font-size: 0.85rem; font-weight: 500;
+    cursor: pointer; transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .preset-chip:hover {
+    background: var(--accent-light); border-color: var(--accent);
+    color: var(--accent-dark); transform: translateY(-1px);
+  }
+
+  .results-section { display: none; }
+  .results-section.visible { display: block; animation: fadeInUp 0.6s ease; }
+
+  .results-header {
+    margin-bottom: 1.5rem;
+    display: flex; align-items: baseline;
+    justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .results-header h2 {
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--slate-900); letter-spacing: -0.02em;
+  }
+  .results-header p { color: var(--slate-500); font-size: 0.95rem; }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .result-card {
+    background: var(--white);
+    border-radius: 22px;
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--slate-100);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .result-card.show { opacity: 1; transform: translateY(0); }
+
+  .result-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .result-card[data-tier="1"]::before { background: linear-gradient(90deg, #8aa3c7 0%, var(--accent) 100%); }
+  .result-card[data-tier="2"]::before { background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%); }
+  .result-card[data-tier="3"]::before { background: linear-gradient(90deg, var(--accent-dark) 0%, var(--slate-800) 100%); }
+
+  .timeframe-label {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    background: var(--accent-light); color: var(--accent-dark);
+    border-radius: 100px; font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 1.25rem;
+  }
+
+  .amount {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.85rem);
+    font-weight: 700;
+    color: var(--slate-900);
+    line-height: 1.05;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .amount-suffix {
+    font-size: 0.88rem; color: var(--slate-500);
+    margin-bottom: 1.75rem; font-weight: 500;
+  }
+
+  .afford-label {
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--slate-600);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.85rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .afford-label i { color: var(--accent); font-size: 0.85rem; }
+
+  .items-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+
+  .item {
+    display: flex; align-items: center; gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    background: var(--slate-50);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    color: var(--slate-700);
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    opacity: 0;
+    transform: translateX(-12px) scale(0.95);
+    border: 1px solid transparent;
+  }
+  .item.in {
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  .item:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    transform: translateX(3px) scale(1);
+  }
+
+  .item-icon {
+    width: 38px; height: 38px;
+    background: white;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+    font-size: 0.95rem;
+  }
+
+  .item-name { flex: 1; font-weight: 600; color: var(--slate-800); }
+
+  .item-count {
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--accent-dark);
+    background: var(--accent-light);
+    padding: 0.2rem 0.55rem;
+    border-radius: 100px;
+    margin-right: 0.5rem;
+    display: none;
+  }
+
+  .item-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600; color: var(--slate-500);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .no-items {
+    padding: 1.25rem;
+    background: var(--slate-50);
+    border-radius: 12px;
+    text-align: center;
+    color: var(--slate-400);
+    font-size: 0.9rem;
+    border: 1px dashed var(--slate-200);
+    display: none;
+  }
+  .no-items.visible { display: block; }
+  .no-items i {
+    display: block; font-size: 1.5rem;
+    margin-bottom: 0.5rem; color: var(--slate-300);
+  }
+
+  .summary-banner {
+    background: linear-gradient(135deg, var(--slate-900) 0%, var(--slate-800) 100%);
+    border-radius: 22px;
+    padding: 2rem;
+    color: white;
+    display: flex; align-items: center; gap: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(74, 111, 165, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .summary-banner.show { opacity: 1; transform: translateY(0); }
+
+  .summary-icon {
+    width: 60px; height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    position: relative; z-index: 1;
+  }
+
+  .summary-text { flex: 1; position: relative; z-index: 1; }
+  .summary-text strong {
+    display: block; font-size: 1.2rem;
+    margin-bottom: 0.35rem; font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .summary-text span { color: var(--slate-300); font-size: 0.95rem; line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .summary-banner {
+      flex-direction: column; text-align: center; padding: 1.5rem;
+    }
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    color: var(--slate-400);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  .footer p { max-width: 500px; margin: 0 auto; }
+
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes popIn {
+    0% { opacity: 0; transform: translateX(-12px) scale(0.9); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); background: var(--accent); color: white; }
+    100% { transform: scale(1); }
+  }
+
+  .item-count.pop { animation: pop 0.4s ease; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-badge">
+        <i class="fas fa-chart-line"></i>
+        Financial Perspective Calculator
+      </div>
+      <h1>The <span>Real Cost</span></h1>
+      <p>That small recurring expense isn't so small. See exactly what your habits add up to over time — and watch what you could buy instead as the numbers climb.</p>
+    </header>
+
+    <section class="input-card" aria-label="Cost input">
+      <form id="costForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="amount">Cost Amount</label>
+            <div class="input-wrap">
+              <span class="input-prefix">$</span>
+              <input type="number" id="amount" class="has-prefix" min="0" step="0.01" placeholder="5.00" value="15" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="frequency">Frequency</label>
+            <select id="frequency" required>
+              <option value="hour">Per Hour</option>
+              <option value="day" selected>Per Day</option>
+              <option value="week">Per Week</option>
+              <option value="month">Per Month</option>
+              <option value="year">Per Year</option>
+            </select>
+          </div>
+          <button type="submit" class="calculate-btn">
+            Calculate
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="presets">
+          <span class="presets-label">Try:</span>
+          <button type="button" class="preset-chip" data-amount="4.50" data-freq="day">$4.50 coffee / day</button>
+          <button type="button" class="preset-chip" data-amount="15" data-freq="month">$15 streaming / month</button>
+          <button type="button" class="preset-chip" data-amount="12" data-freq="day">$12 lunch / day</button>
+          <button type="button" class="preset-chip" data-amount="50" data-freq="week">$50 gas / week</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="results-section" id="results" aria-live="polite">
+      <div class="results-header">
+        <h2>Here's the reality</h2>
+        <p id="resultsSubtitle">Based on your inputs</p>
+      </div>
+      <div class="results-grid" id="resultsGrid"></div>
+      <div class="summary-banner" id="summaryBanner">
+        <div class="summary-icon">
+          <i class="fas fa-lightbulb"></i>
+        </div>
+        <div class="summary-text">
+          <strong id="summaryTitle">Your 10-year potential</strong>
+          <span id="summaryText"></span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Estimates assume constant spending and don't account for inflation or investment returns. The real opportunity cost of recurring expenses is often much higher than it appears.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Hardcoded comparison items array — sorted by price ascending
+    const items = [
+      { name: "4K Smart TV", price: 600, icon: "fa-tv" },
+      { name: "Brand New iPhone", price: 999, icon: "fa-mobile-screen" },
+      { name: "Round-trip Flight to Tokyo", price: 1200, icon: "fa-plane" },
+      { name: "New Laptop", price: 2000, icon: "fa-laptop" },
+      { name: "Dream Vacation", price: 5000, icon: "fa-umbrella-beach" },
+      { name: "Year of College Tuition", price: 25000, icon: "fa-graduation-cap" },
+      { name: "Used Tesla Model 3", price: 35000, icon: "fa-car" },
+      { name: "Down Payment on a House", price: 50000, icon: "fa-house" }
+    ];
+
+    const annualMultipliers = {
+      hour: 24 * 365,
+      day: 365,
+      week: 52,
+      month: 12,
+      year: 1
+    };
+
+    const frequencyAdjective = {
+      hour: 'hourly',
+      day: 'daily',
+      week: 'weekly',
+      month: 'monthly',
+      year: 'yearly'
+    };
+
+    // DOM references
+    const form = document.getElementById('costForm');
+    const amountInput = document.getElementById('amount');
+    const frequencySelect = document.getElementById('frequency');
+    const resultsSection = document.getElementById('results');
+    const resultsGrid = document.getElementById('resultsGrid');
+    const resultsSubtitle = document.getElementById('resultsSubtitle');
+    const summaryBanner = document.getElementById('summaryBanner');
+    const summaryTitle = document.getElementById('summaryTitle');
+    const summaryText = document.getElementById('summaryText');
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+      }).format(Math.max(0, value));
+    }
+
+    // Dynamic count-up that triggers callbacks during animation
+    function animateNumberDynamic(element, target, duration, onUpdate) {
+      const startTime = performance.now();
+      
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease-out cubic for a satisfying finish
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+        
+        element.textContent = formatCurrency(current);
+        if (onUpdate) onUpdate(current);
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          element.textContent = formatCurrency(target);
+          if (onUpdate) onUpdate(target);
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    function renderResultCard(timeframe, total, tier, delay) {
+      // Calculate final counts for all items
+      const finalItems = items.map(item => ({
+        ...item,
+        finalCount: Math.floor(total / item.price)
+      }));
+
+      const card = document.createElement('article');
+      card.className = 'result-card';
+      card.dataset.tier = tier;
+
+      card.innerHTML = `
+        <div class="timeframe-label">
+          <i class="fas fa-clock"></i>
+          ${timeframe.label}
+        </div>
+        <div class="amount" data-target="${total}">${formatCurrency(0)}</div>
+        <div class="amount-suffix">${timeframe.suffix}</div>
+        <div class="afford-label">
+          <i class="fas fa-gift"></i>
+          What you could buy instead
+        </div>
+        <ul class="items-list"></ul>
+        <div class="no-items">
+          <i class="fas fa-seedling"></i>
+          Keep going — at this rate, the bigger rewards come with more time.
+        </div>
+      `;
+
+      resultsGrid.appendChild(card);
+
+      const amountEl = card.querySelector('.amount');
+      const itemsListEl = card.querySelector('.items-list');
+      const noItemsEl = card.querySelector('.no-items');
+      
+      // Reveal card
+      setTimeout(() => card.classList.add('show'), delay);
+
+      // Dynamic duration: bigger numbers take longer, capped at 3.5s
+      const duration = Math.min(3500, Math.max(1200, Math.log10(Math.max(10, total)) * 700));
+
+      // Start dynamic animation
+      setTimeout(() => {
+        const renderedItems = new Map();
+
+        animateNumberDynamic(amountEl, total, duration, (current) => {
+          let activeItems = 0;
+
+          // Check every item on every frame
+          finalItems.forEach(item => {
+            const currentCount = Math.floor(current / item.price);
+            
+            if (currentCount > 0) {
+              activeItems++;
+              
+              // Item threshold crossed, but not yet rendered -> ADD IT
+              if (!renderedItems.has(item.name)) {
+                if (noItemsEl.classList.contains('visible')) noItemsEl.classList.remove('visible');
+                
+                const li = document.createElement('li');
+                li.className = 'item';
+                li.innerHTML = `
+                  <div class="item-icon"><i class="fas ${item.icon}" aria-hidden="true"></i></div>
+                  <div class="item-name">${item.name}</div>
+                  <span class="item-count" style="display: none;">×${currentCount}</span>
+                  <div class="item-price">${formatCurrency(item.price)}</div>
+                `;
+                itemsListEl.appendChild(li);
+                renderedItems.set(item.name, li);
+                
+                // Trigger slide-in animation
+                requestAnimationFrame(() => {
+                  li.classList.add('in');
+                });
+              } 
+              // Item already exists, but count increased -> POP THE BADGE
+              else {
+                const li = renderedItems.get(item.name);
+                const countEl = li.querySelector('.item-count');
+                if (item.finalCount > 1) {
+                  const newCount = currentCount;
+                  if (countEl.textContent !== `×${newCount}`) {
+                    countEl.textContent = `×${newCount}`;
+                    countEl.style.display = 'inline-block';
+                    
+                    // Restart pop animation
+                    countEl.classList.remove('pop');
+                    void countEl.offsetWidth; 
+                    countEl.classList.add('pop');
+                  }
+                }
+              }
+            }
+          });
+
+          // If animation finished and no items were added, show empty state
+          if (current >= total && activeItems === 0) {
+            noItemsEl.classList.add('visible');
+          }
+        });
+      }, delay + 150);
+    }
+
+    function calculate(event) {
+      event.preventDefault();
+
+      const amount = parseFloat(amountInput.value);
+      const frequency = frequencySelect.value;
+
+      if (isNaN(amount) || amount < 0) return;
+
+      const annualCost = amount * annualMultipliers[frequency];
+      const totals = {
+        year1: annualCost * 1,
+        year5: annualCost * 5,
+        year10: annualCost * 10
+      };
+
+      // Reset prior results
+      resultsGrid.innerHTML = '';
+      summaryBanner.classList.remove('show');
+
+      const timeframes = [
+        { label: '1 Year', suffix: 'spent over one year', total: totals.year1 },
+        { label: '5 Years', suffix: 'spent over five years', total: totals.year5 },
+        { label: '10 Years', suffix: 'spent over ten years', total: totals.year10 }
+      ];
+
+      timeframes.forEach((tf, idx) => {
+        renderResultCard(tf, tf.total, String(idx + 1), idx * 140);
+      });
+
+      const freqAdj = frequencyAdjective[frequency];
+      resultsSubtitle.textContent = `If you spend ${formatCurrency(amount)} ${freqAdj}, here's what it adds up to:`;
+
+      summaryTitle.textContent = `In 10 years, that's ${formatCurrency(totals.year10)}`;
+      summaryText.textContent = `If you saved this ${freqAdj} expense instead — even without investing it — you'd have ${formatCurrency(totals.year10)} in your pocket a decade from now.`;
+
+      resultsSection.classList.add('visible');
+      
+      // Delay summary banner to appear after the longest calculation finishes
+      setTimeout(() => summaryBanner.classList.add('show'), 3800);
+
+      setTimeout(() => {
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
+    }
+
+    form.addEventListener('submit', calculate);
+
+    document.querySelectorAll('.preset-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        amountInput.value = chip.dataset.amount;
+        frequencySelect.value = chip.dataset.freq;
+        form.dispatchEvent(new Event('submit'));
+      });
+    });
+
+    amountInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        form.dispatchEvent(new Event('submit'));
+      }
+    });
+  </script>
+</body>
+</html>
